@@ -11,7 +11,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Images from './pages/Images'
 import UploadImage from './pages/UploadImage'
 import Image from './components/Image'
-
+import Dashboard from './pages/Dashboard'
 
 
 const App = () => {
@@ -38,7 +38,9 @@ const App = () => {
           <Route path='/images/:imageId' element={<PrivateRoute />}>
             <Route path='/images/:imageId' element={<Image />} />
           </Route>
-
+          <Route path='/dashboard' element={<PrivateRoute />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
 
         </Routes >
       </div>
