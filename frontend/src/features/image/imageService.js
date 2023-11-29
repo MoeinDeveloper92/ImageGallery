@@ -44,10 +44,23 @@ const getImages = async (token) => {
 }
 
 
+//get image
+const getImage = async (imageId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.get(API_URL + "download/" + imageId, config)
+    return response.data
+}
+
 
 const imageService = {
     uploadImage,
-    getImages
+    getImages,
+    getImage
 }
 
 

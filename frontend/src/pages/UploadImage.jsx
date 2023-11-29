@@ -5,6 +5,7 @@ import { uploadImage, reset } from '../features/image/imageSlice'
 import { motion } from "framer-motion"
 import { toast } from "react-toastify"
 import Spinner from '../components/Spinner'
+import BackButton from '../components/BackButton'
 
 const UploadImage = () => {
 
@@ -15,7 +16,7 @@ const UploadImage = () => {
     const [label, setLable] = useState("dog")
     const [description, setDescription] = useState("")
 
-    const { images, image: { singleImage }, isLoading, isError, isSuccess, message } = useSelector((state) => state.image)
+    const { isLoading, isError, isSuccess, message } = useSelector((state) => state.image)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -53,6 +54,7 @@ const UploadImage = () => {
     if (isLoading) {
         return <Spinner />
     }
+
     return (
         <motion.div
             initial={{
@@ -64,7 +66,7 @@ const UploadImage = () => {
             transition={{
                 duration: "0.2"
             }}
-        >
+        >   <BackButton url={"/"} />
             <div className='card max-w-xl mx-auto mt-20 shadow-lg py-6 px-9'>
 
                 <section className="text-center mt-3">
@@ -110,6 +112,9 @@ const UploadImage = () => {
                                 value={label}
                                 onChange={(e) => setLable(e.target.value)}
                             >
+
+                                <option value="human">Human</option>
+                                <option value="computer">computer</option>
                                 <option value="dog">dog</option>
                                 <option value="cow">cow</option>
                                 <option value="cat">cat</option>

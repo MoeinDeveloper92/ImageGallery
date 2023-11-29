@@ -70,10 +70,14 @@ const getImage = asyncHandler(async (req, res, next) => {
 
     //send the id of the image that we want to pull
     const image = await Image.findById(req.params.id)
-    if (image.user.toString() !== req.user._id) {
-        res.status(401)
-        throw new Error("Unauthorized access...")
+    if (!image) {
+        res.status(404)
+        throw new Error("Image not found.")
     }
+    // if (image.user.toString() !== req.user._id) {
+    //     res.status(401)
+    //     throw new Error("Unauthorized access.")
+    // }
 
     res.status(200).json(image)
 })
