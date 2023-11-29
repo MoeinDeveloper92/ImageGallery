@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../model/userModel")
 const Image = require("../model/imageModel")
-
+const jsonexport = require("jsonexport")
 
 //@desc     Upload user's image
 //@route    POST/api/images/upload
@@ -74,16 +74,41 @@ const getImage = asyncHandler(async (req, res, next) => {
         res.status(404)
         throw new Error("Image not found.")
     }
-    // if (image.user.toString() !== req.user._id) {
-    //     res.status(401)
-    //     throw new Error("Unauthorized access.")
-    // }
 
     res.status(200).json(image)
 })
 
+//@desc     Exporting data from mongodb to CSV
+//@route    GET /api/images/export-to-excel
+//@access   Private
+const exportToExcel = asyncHandler(async (req, res, next) => {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+        res.status(401)
+        throw new Error("User not Found")
+    }
+    const images = await Image.find().lean()
+    if (images.length === 0) {
+        res.status(404)
+        throw new Error("No Data Found")
+    }
+
+    //Convert data to CSV format
+    jsonexport(images, (err, csv) => {
+        if (err) {
+            res.status(500)
+            throw new Error("Internal Server Error")
+        }
+        //Conver to CSV file
+        const excelBuffer = Buffer.from(csv, 'utf-8')
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=exported_data.xlsx');
+        res.send(excelBuffer);
+    })
+})
 module.exports = {
     uploadImage,
     getImages,
-    getImage
+    getImage,
+    exportToExcel
 }

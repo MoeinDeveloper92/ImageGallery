@@ -57,10 +57,40 @@ const getImage = async (imageId, token) => {
 }
 
 
+//Export to Excel
+const exportToExcel = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // Ensure response type is blob for file download
+    };
+
+    try {
+        const response = await axios.get(API_URL + "download/export-to-excel", config);
+
+        const blob = response.data;
+
+        // Download the Excel file
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'exported_data.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+    }
+};
+
+
 const imageService = {
     uploadImage,
     getImages,
-    getImage
+    getImage,
+    exportToExcel
 }
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Spinner from '../components/Spinner'
-import { getImages, reset } from '../features/image/imageSlice'
+import { exportToExcel, getImages, reset } from '../features/image/imageSlice'
 import { toast } from 'react-toastify'
 import ImageItem from '../components/ImageItem'
 import BackButton from '../components/BackButton'
@@ -30,6 +30,10 @@ const Images = () => {
     if (isLoading) {
         return <Spinner />
     }
+
+    const handleExport = () => {
+        dispatch(exportToExcel())
+    }
     return (
         <>
             <BackButton url={"/"} className="mb-3" />
@@ -42,7 +46,7 @@ const Images = () => {
                 <Link className='btn btn-outline' to={"/dashboard"}>
                     Visit Dashboard
                 </Link>
-                <Link className='btn btn-outline'>
+                <Link onClick={handleExport} className='btn btn-outline'>
                     Download Excel file
                 </Link>
             </div>

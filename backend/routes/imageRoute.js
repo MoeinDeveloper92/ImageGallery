@@ -1,5 +1,5 @@
 const express = require("express")
-const { uploadImage, getImages, getImage } = require("../controller/imageController")
+const { uploadImage, getImages, getImage, exportToExcel } = require("../controller/imageController")
 const router = express.Router()
 const protect = require("../middleware/authMiddleware")
 const multer = require("multer")
@@ -22,5 +22,6 @@ const upload = multer({ storage: storage });
 router.route("/upload").post(protect, upload.fields([{ name: 'image' }, { name: 'label' }, { name: 'description' }]), uploadImage);
 router.route("/download").get(protect, getImages)
 router.route("/download/:id").get(protect, getImage)
+router.route("/download/export-to-excel").get(protect, exportToExcel)
 
 module.exports = router

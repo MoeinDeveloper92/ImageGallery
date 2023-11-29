@@ -53,6 +53,11 @@ export const getImage = createAsyncThunk("image/get", async (imageId, thunkAPI) 
     }
 })
 
+export const exportToExcel = createAsyncThunk("image/excel", async (_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+    return await imageService.exportToExcel(token)
+})
+
 //create Image slice
 export const imageSlice = createSlice({
     name: "image",
