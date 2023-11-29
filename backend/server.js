@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 
 //middleware Route
 app.use("/api/users/", require("./routes/userRoute"))
+app.use("/api/images/", require("./routes/imageRoute"))
 
 app.use(errorHandler)
 

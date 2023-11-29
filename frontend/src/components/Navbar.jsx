@@ -17,7 +17,7 @@ const Navbar = () => {
         navigate("/")
     }
     return (
-        <div className="drawer z-20 sticky left-0 top-0">
+        <div className="drawer z-20 mb-10">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col">
 
