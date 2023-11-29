@@ -59,7 +59,7 @@ const Register = () => {
     }
     return (
 
-        <div className="hero mt-10 bg-base-200">
+        <div className="hero sm:mt-0  py-20 bg-base-200">
             <motion.div
                 initial={{
                     x: "-100%"
@@ -68,14 +68,14 @@ const Register = () => {
                     x: '0'
                 }}
             >
-                <div className="hero-content flex-col lg:flex-row-reverse">
+                <div className="hero-content sm:mb-20 flex-col lg:flex-row-reverse gap-10">
                     <div className="text-center lg:text-left">
                         <h1 className="text-5xl font-bold">Regiter Now!</h1>
                         <p className="py-6">Create an Account and Upload images on the cloud... Enjoy your Album:)</p>
                     </div>
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 
-                        <form onSubmit={handleSubmit} className="card-body">
+                        <form onSubmit={handleSubmit} className="card-body space-y-0" >
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Name</span>
@@ -83,7 +83,7 @@ const Register = () => {
                                 <input
                                     type="text"
                                     placeholder="email"
-                                    className="input input-bordered"
+                                    className="sm:input sm:input-bordered sm:input-sm  md:input-sm lg:input lg:input-md lg:input-bordered"
                                     required
                                     value={name}
                                     onChange={handleChange}
@@ -97,7 +97,7 @@ const Register = () => {
                                 <input
                                     type="email"
                                     placeholder="email"
-                                    className="input input-bordered"
+                                    className="sm:input sm:input-bordered sm:input-sm  md:input-sm lg:input lg:input-md lg:input-bordered"
                                     required
                                     value={email}
                                     onChange={handleChange}
@@ -111,7 +111,7 @@ const Register = () => {
                                 <input
                                     type="password"
                                     placeholder="Password"
-                                    className="input input-bordered"
+                                    className="sm:input sm:input-bordered sm:input-sm  md:input-sm lg:input lg:input-md lg:input-bordered"
                                     required
                                     value={password}
                                     onChange={handleChange}
@@ -125,7 +125,7 @@ const Register = () => {
                                 <input
                                     type="password"
                                     placeholder="Confirm password"
-                                    className="input input-bordered"
+                                    className="sm:input sm:input-bordered sm:input-sm  md:input-sm lg:input lg:input-md lg:input-bordered"
                                     required
                                     value={password2}
                                     id='password2'

@@ -44,7 +44,7 @@ const Login = () => {
     }
     return (
 
-        <div className="hero mt-20 bg-base-200">
+        <div className="hero mt-10 md:py-0 bg-base-200 ">
             <motion.div
                 initial={{
                     x: "-100%"
@@ -58,7 +58,7 @@ const Login = () => {
                         <h1 className="text-5xl font-bold">Login Now!</h1>
                         <p className="py-6">Get into you account and upload image as well as review you album and remenisce about the past:)</p>
                     </div>
-                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                    <div className="card  shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 
                         <form onSubmit={handleSubmit} className="card-body">
 

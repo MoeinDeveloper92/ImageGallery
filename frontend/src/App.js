@@ -11,7 +11,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Images from './pages/Images'
 const App = () => {
   return (
-    <div className='h-screen bg-base-200 flex flex-col overflow-hidden '>
+    <div className='h-screen bg-base-200 flex flex-col overflow-scroll '>
       <Navbar />
       <div className='flex-1 ' >
         <Routes>
