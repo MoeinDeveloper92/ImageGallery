@@ -7,6 +7,8 @@ import ImageItem from '../components/ImageItem'
 import BackButton from '../components/BackButton'
 import { Link } from 'react-router-dom'
 
+
+
 const Images = () => {
     const { images, isError, isLoading, isSuccess, message } = useSelector((state) => state.image)
     const dispatch = useDispatch()
@@ -37,19 +39,25 @@ const Images = () => {
     return (
         <>
             <BackButton url={"/"} className="mb-3" />
-            <div className='mt-3 grid sm:grid-cols-1 gap-8 xl:grid-cols-3  md:grid-cols-2'>
-                {images && images.map((image) => (
-                    <ImageItem key={image._id} image={image} />
-                ))}
-            </div>
-            <div className='mt-10 space-x-3'>
-                <Link className='btn btn-outline' to={"/dashboard"}>
-                    Visit Dashboard
-                </Link>
-                <Link onClick={handleExport} className='btn btn-outline'>
-                    Download Excel file
-                </Link>
-            </div>
+            {images.length === 0 ? (<>
+                <h2 className='text-center text-4xl font-bold mt-20'>There is no Image card to be shown</h2>
+                <h3 className='text-center text-3xl font-bold mt-10'>Back to Homepage and Upload Image.</h3>
+            </>) : (<>
+                <div className='mt-10 grid sm:grid-cols-1 gap-5 xl:grid-cols-3  md:grid-cols-2 '>
+                    {images && images.map((image) => (
+                        <ImageItem key={image._id} image={image} />
+                    ))}
+                </div>
+                <div className='mt-10 space-x-3'>
+                    <Link className='btn btn-outline' to={"/dashboard"}>
+                        Visit Dashboard
+                    </Link>
+                    <Link onClick={handleExport} className='btn btn-outline'>
+                        Download Excel file
+                    </Link>
+                </div>
+            </>)}
+
         </>
     )
 }

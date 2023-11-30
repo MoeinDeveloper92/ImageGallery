@@ -1,4 +1,6 @@
 const asyncHandler = require("express-async-handler")
+const path = require("path")
+const fs = require("fs")
 const User = require("../model/userModel")
 const Image = require("../model/imageModel")
 const jsonexport = require("jsonexport")
@@ -125,20 +127,30 @@ const deleteImage = asyncHandler(async (req, res, next) => {
     }
 
     const image = await Image.findById(req.params.id)
+    const imagePath = path.join(__dirname, "../../frontend/src/images", image.image)
+
     if (!image) {
         res.status(404)
         throw new Error("Image not found")
     }
+
 
     if (image.user.toString() !== req.user._id.toString()) {
         res.status(401)
         throw new Error("Only authorized user can delete!")
     }
 
+
     await Image.findByIdAndDelete(req.params.id)
-    res.status(200).json({
-        id: req.params.id
-    })
+
+    //this piece delete file from the DB and from the Image folder :)
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath); // Delete the file synchronously
+        res.status(200).json({ message: 'Image deleted successfully', id: req.params.id });
+    } else {
+        res.status(404).json({ message: 'Image not found' });
+    }
+
 })
 
 

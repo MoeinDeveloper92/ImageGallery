@@ -17,7 +17,7 @@ const ImageItem = ({ image }) => {
 
 
     return (
-        <div className='text-white card shadow-lg compact side bg-gray-600'>
+        <div className=' text-white card shadow-lg compact side bg-gray-600'>
             <div className="flex-row items-center space-x-5 card-body relative">
 
                 <button onClick={onDelete}>
@@ -31,7 +31,7 @@ const ImageItem = ({ image }) => {
                 </div>
 
                 <div className='space-y-5'>
-                    <h2 className="card-title text-2xl">Label: {image.label}</h2>
+                    <h2 className="card-title text-2xl sm:text-sm">Label: {image.label}</h2>
                     <Link className=' text-white text-xl' to={`/images/${image._id}`}>
                         Visit Image
                     </Link>

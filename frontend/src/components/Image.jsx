@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 
 const Image = () => {
     const { image, isError, isLoading, isSuccess, message } = useSelector((state) => state.image)
-
+    const { user } = useSelector(state => state.auth)
     const dispatch = useDispatch()
     const params = useParams()
 
@@ -30,13 +30,28 @@ const Image = () => {
     return (
         <>
             <BackButton url={"/images"} />
-            <div className="hero min-h-screen bg-base-200">
+            <div className="hero min-h-screen bg-base-200 ">
                 <div className="hero-content flex-col lg:flex-row-reverse">
-                    < img src={require(`../images/${image.image}`)} alt="" className="max-w-sm rounded-lg shadow-2xl" srcset='' />
-                    <div>
-                        <h1 className="text-5xl font-bold">Box Office News!</h1>
-                        <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-                        <button className="btn btn-primary">Get Started</button>
+                    {image && image.image && (
+                        <img
+                            src={require(`../images/${image.image}`).default}
+                            alt=""
+                            className="max-w-sm rounded-lg shadow-2xl"
+                            srcSet=""
+                        />
+                    )}
+                    <div className='card compact shadow-lg px-4 py-6 w-96 h-auto'>
+                        <div className="">
+                            <h1 className="text-4xl font-bold">Profile: {user.name}</h1>
+
+                        </div>
+
+                        <br />
+                        <div className="">
+                            <h1 className="text-3xl font-bold">Label: {image.label}</h1>
+                            <p className="py-6">Description: {image.description}.</p>
+                        </div>
+                        <button className="btn btn-outline">Get Started</button>
                     </div>
                 </div>
             </div>
