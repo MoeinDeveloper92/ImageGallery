@@ -67,11 +67,12 @@ const UploadImage = () => {
                 duration: "0.2"
             }}
         >   <BackButton url={"/"} />
-            <div className='card max-w-xl mx-auto mt-20 shadow-lg py-6 px-9'>
+            <div className='card max-w-xl mx-auto mt-[-60px] shadow-lg py-6 px-9'>
 
                 <section className="text-center mt-3">
-                    <h1 className="py-2 font-bold text-2xl">Upload an Image</h1>
-                    <p className='py-2 font-bold text-2xl mb-10'>Beside the label, you can add a description about the picture that you are supposed to upload</p>
+                    <h1 className="py-2 font-bold text-2xl">Upload Image</h1>
+                    <hr />
+                    <p className='py-2 font-bold text-xl text-gray-500 mb-10'>Beside the label, you can add a description about the picture that you are supposed to upload</p>
 
                 </section>
 

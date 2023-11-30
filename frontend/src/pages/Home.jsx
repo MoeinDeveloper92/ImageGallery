@@ -15,7 +15,7 @@ const Home = () => {
             animate={{
                 y: '0'
             }}
-            className='h-full mt-20 '
+            className='h-full sm:mt-0 md:mt-0 lg:mt-0 '
         >
             <div className="hero bg-base-200  border-black">
                 <div className="hero-content text-center">

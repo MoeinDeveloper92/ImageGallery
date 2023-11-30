@@ -3,7 +3,12 @@ const path = require("path")
 const fs = require("fs")
 const User = require("../model/userModel")
 const Image = require("../model/imageModel")
-const jsonexport = require("jsonexport")
+const ExcelJS = require('exceljs')
+const archiver = require("archiver")
+
+
+
+
 
 //@desc     Upload user's image
 //@route    POST/api/images/upload
@@ -47,6 +52,9 @@ const uploadImage = asyncHandler(async (req, res, next) => {
 })
 
 
+
+
+
 //@desc     Get all the user's image and send the, backe to fornt
 //@route    GET/api/images/download
 //@access   Private
@@ -65,6 +73,12 @@ const getImages = asyncHandler(async (req, res, next) => {
     res.status(200).json(images)
 })
 
+
+
+
+//@desc     Get single Image
+//@desc     GET/download/:id
+//@access   private
 const getImage = asyncHandler(async (req, res, next) => {
     //check for the user
     const user = await User.findById(req.user._id)
@@ -87,37 +101,74 @@ const getImage = asyncHandler(async (req, res, next) => {
     res.status(200).json(image)
 })
 
+
+
 //@desc     Exporting data from mongodb to CSV
 //@route    GET /api/images/export-to-excel
 //@access   Private
 const exportToExcel = asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.user._id)
+
+    const user = await User.findById(req.user.id)
+    console.log(user)
     if (!user) {
         res.status(401)
         throw new Error("User not Found")
     }
-    const images = await Image.find().lean()
-    if (images.length === 0) {
-        res.status(404)
-        throw new Error("No Data Found")
-    }
 
-    //Convert data to CSV format
-    jsonexport(images, (err, csv) => {
-        if (err) {
-            res.status(500)
-            throw new Error("Internal Server Error")
-        }
-        //Conver to CSV file
-        const excelBuffer = Buffer.from(csv, 'utf-8')
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename=exported_data.xlsx');
-        res.send(excelBuffer);
-    })
+    try {
+
+        const images = await Image.find({ user: req.user.id });
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Images');
+
+        // Adding headers to the Excel file
+        worksheet.columns = [
+            { header: 'Label', key: 'label' },
+            { header: 'Description', key: 'description' },
+            { header: 'Image', key: 'image' },
+        ];
+
+        // Adding data to the Excel file
+        images.forEach((image) => {
+            worksheet.addRow({
+                label: image.label,
+                description: image.description,
+                image: image.image,
+            });
+        });
+
+        // Generating Excel file in memory
+        const excelBuffer = await workbook.xlsx.writeBuffer();
+
+        // Prepare the zip file containing the Excel file and images
+        const archive = archiver('zip', { zlib: { level: 9 } });
+        res.attachment('imageCollection.zip'); // Set the response to send a zip file
+
+        archive.pipe(res); // Pipe the zip to the response
+
+        // Add the Excel file to the zip
+        archive.append(excelBuffer, { name: 'imageData.xlsx' }); // Add the Excel file to the zip
+
+        // Add images to the zip
+        images.forEach((image) => {
+            const imagePath = path.join(__dirname, "../../frontend/src/images", image.image); // Adjust with your image path
+            archive.file(imagePath, { name: `images/${image.image}` }); // Add each image to the 'images' folder in the zip
+        });
+
+        archive.finalize(); // Finalize the zip file
+
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to generate zip file' });
+    }
 })
 
 
-//Delete Image card
+
+
+//@desc     Delete an image
+//@route    DELETE /api/images/:id
+//@access   Private
 const deleteImage = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user._id)
 

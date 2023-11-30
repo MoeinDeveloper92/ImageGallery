@@ -5,7 +5,7 @@ import { getImage } from '../features/image/imageSlice'
 import { useParams } from 'react-router-dom'
 import Spinner from './Spinner'
 import { toast } from "react-toastify"
-
+import { Link } from 'react-router-dom'
 
 const Image = () => {
     const { image, isError, isLoading, isSuccess, message } = useSelector((state) => state.image)
@@ -51,7 +51,9 @@ const Image = () => {
                             <h1 className="text-3xl font-bold">Label: {image.label}</h1>
                             <p className="py-6">Description: {image.description}.</p>
                         </div>
-                        <button className="btn btn-outline">Get Started</button>
+                        <Link target='__blank' to={"https://github.com/MoeinDeveloper92"} className='btn btn-outline'>
+                            Visit
+                        </Link>
                     </div>
                 </div>
             </div>
