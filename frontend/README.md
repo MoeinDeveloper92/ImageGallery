@@ -103,4 +103,9 @@ Once user logged In, each user can upload image, and see their image within a ga
 </p>
 
 
+<h1>React-Router</h1>
+<p>React By deafult does not have routing features, therefore we make use of a package called, react-router-m version 6 in order to navigate between pages in a SPA. I have used many Link component to navigate and keep the UI in sync with URL, and 
+I have user OUTLET which is a nested functionality in Router which allows only authorized users have access to the protected route. In this regard, we not only keep our backend secure, but also our UI is secure.
+</p>
+
 
