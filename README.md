@@ -103,4 +103,13 @@ Once user logged In, each user can upload image, and see their image within a ga
 </p>
 
 
+<h1>
+    Tailwind/daisyui
+</h1>
+<p>
+    I have used Twailwindcss for creating this simple UI, which gives the developer this power to create a ui as quick as possible. On top of that, I have user daisyui which is a plugin for Tailwing which comes with extra utility classes. like Navbar/ footer sidebar btn card ...
+    I have also used Tailwind docs for further configuration...
+</p>
+
+
 
