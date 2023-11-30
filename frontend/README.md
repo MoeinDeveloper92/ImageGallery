@@ -109,3 +109,10 @@ I have user OUTLET which is a nested functionality in Router which allows only a
 </p>
 
 
+<h1>Tailwind/daisyui</h1>
+<p>
+Tailwind is a CSS framework which uses low-level classes for designing the ui, and daisyui is tailwind plugins which has cool features like navbar/ sidebar/ card and ... 
+I have used Tailwind Docs for furhter installation and configuration.
+
+</p>
+
