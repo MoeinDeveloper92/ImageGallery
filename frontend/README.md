@@ -1,41 +1,39 @@
-# Getting Started with Create React App and Redux
+<h1>Image Gallery Application</h1>
+<p>This Application is created by MERN technology which contains MongoDB for database/ ExpressJS fro API creation/ React for UI/ Node which is the our runtime environment.
+The purpose of the application is , user should create an account and be authneticated in order to get access to the app's functionality. Each user can Upload image with a lable which needs to be selected through the list items, and add a description about the image.
+</p>
+<hr/>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+<ul>
+    <li>Backend</li>
+    <li>Frontend</li>
+</ul>
+<hr/>
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<h3>Set up nodejs and Express Js</h3>
+<p>The first step I have set up nodejs and express in order to handle server side logic</p>
+<p>Dependencies which I have used are as below</p>
 
 ```bash
+npm i expressjs mongoose colors jsonwebtoken bcryptjs colors moment 
+```
+<p>I have used nodemon which keeps restarting the server automatically, whenver a chane has been detected.</p>
+<hr/>
+
+<h3>MongoDB set up</h3>
+<p>In this app I have 2 resources. One is user, and second is Images. In this regard, each user can have multiple images, and each image belong to only one user, which means user should be defigned as a foreign key in Image Schema.</p>
+<hr/>
+<h3>Creating Restful API </h3>
+<p>In the backend I have created restful API for CRUD operation to handle image data and annotation.</p>
+<p>End points include route for download/upload/delete/update</p>
+<hr/>
+<p>The challenging part of the project is user Authentication, which I did it by Express Middleware which is a function that runs during the res and req cycle.</p>
+
+```bash
+const User = require("../model/userModel")
+const jwt = require("jsonwebtoken")
+const asyncHandler = require("express-async-handler")
+
 const protect = asyncHandler(async (req, res, next) => {
     let token;
 
@@ -61,5 +59,48 @@ const protect = asyncHandler(async (req, res, next) => {
     }
 })
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+module.exports = protect
 ```
+
+<h1>API Test</h1>
+<p>Before getting into the frontend, it is very important to make sure that your api is working properly, otherwise it will be pain in the ass to jump back and fourth between UI and Back:). for API testing I user a cooll toll which is called POSTMAN.
+Developers can send req to their endpoints and test it under various scenarios. In this case, for handling errors, I have made a custom Error Handler which is in charge of sending appropriate response to the UI. the UI will catch it trhough Redux and show it to the client.
+</p>
+
+```bash
+const errorHandler = (err, req, res, next) => {
+    const statusCode = res.statusCode ? res.statusCode : 500
+    res.status(statusCode)
+    res.json({
+        message: err.message,
+        stack: process.env.NODE_ENV === 'production' ? null : err.stack
+    })
+}
+
+
+module.exports = errorHandler
+```
+<p>In Express js every error has a name and has a code, which means developers can easily handle error by Error Class and prepare an appropriate response and send it to the UI.
+for example: if (err.code ===1101){
+    res.status(400)
+    throw Error("Duplicate user in DB")
+}
+</p>
+
+<hr/>
+
+<h1>Frontend</h1>
+<p>As for UI. I have used React, and all its dependencies which make app development much cooler and faster, and with respect to the data management I have used Redux.
+The first part of the UI is Register page and Login page. When user login or register to the application a JWT will be sent to the UI, it could be stored to http coockies or localStorage, which I stored there. 
+Once user logged In, each user can upload image, and see their image within a gallery. user has this capablity to download all its images and its labels ina zip file which will be shown in the Excel.
+</p>
+
+<h1>Redux</h1>
+<p>Redux is a tool for state management, although react has buil-in useReducer hook ro managing states, my first go for is Redux. In this app we have two resources, User and Images. inside the User, we can perform register/ login/ logout/delete.
+    All Requests are done thorugh a separate file called userService, which I have used axios in this regard. In order to access the protected route in the backedn, I should pack the request with Bearer Token. In this regard server will auhthorize the user and let it to make use of app.
+    
+</p>
+
+
+
