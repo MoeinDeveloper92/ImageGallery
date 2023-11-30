@@ -56,6 +56,9 @@ const getImages = asyncHandler(async (req, res, next) => {
         throw new Error("User not found")
     }
 
+
+
+
     const images = await Image.find({ user: req.user._id })
     res.status(200).json(images)
 })
@@ -73,6 +76,10 @@ const getImage = asyncHandler(async (req, res, next) => {
     if (!image) {
         res.status(404)
         throw new Error("Image not found.")
+    }
+    if (image.user.toString() !== req.user._id.toString()) {
+        res.status(401)
+        throw new Error("Only authorized user can delete!")
     }
 
     res.status(200).json(image)
@@ -106,9 +113,41 @@ const exportToExcel = asyncHandler(async (req, res, next) => {
         res.send(excelBuffer);
     })
 })
+
+
+//Delete Image card
+const deleteImage = asyncHandler(async (req, res, next) => {
+    const user = await User.findById(req.user._id)
+
+    if (!user) {
+        res.status(401)
+        throw new Error("User not found")
+    }
+
+    const image = await Image.findById(req.params.id)
+    if (!image) {
+        res.status(404)
+        throw new Error("Image not found")
+    }
+
+    if (image.user.toString() !== req.user._id.toString()) {
+        res.status(401)
+        throw new Error("Only authorized user can delete!")
+    }
+
+    await Image.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+        id: req.params.id
+    })
+})
+
+
+//Update Image
+
 module.exports = {
     uploadImage,
     getImages,
     getImage,
-    exportToExcel
+    exportToExcel,
+    deleteImage
 }

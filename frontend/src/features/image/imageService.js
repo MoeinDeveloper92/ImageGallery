@@ -69,28 +69,43 @@ const exportToExcel = async (token) => {
     try {
         const response = await axios.get(API_URL + "download/export-to-excel", config);
 
-        const blob = response.data;
+        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
 
         // Download the Excel file
-        const url = window.URL.createObjectURL(new Blob([blob]));
+        const url = window.URL.createObjectURL(blob);
+
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', 'exported_data.xlsx');
         document.body.appendChild(link);
         link.click();
-        link.parentNode.removeChild(link);
+        document.body.removeChild(link);
     } catch (error) {
         console.error('Error:', error);
-        // Handle error
+
     }
 };
+
+
+///Delete Image
+const deleteImage = async (imageId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.delete(API_URL + imageId, config)
+    return response.data
+}
 
 
 const imageService = {
     uploadImage,
     getImages,
     getImage,
-    exportToExcel
+    exportToExcel,
+    deleteImage
 }
 
 

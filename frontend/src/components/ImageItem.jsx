@@ -1,14 +1,28 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { deleteImage } from '../features/image/imageSlice'
 
 const ImageItem = ({ image }) => {
+
     const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+
+    const onDelete = () => {
+        if (window.confirm("Are you sure that you want to delete the image Card?")) {
+            console.log(image)
+            dispatch(deleteImage(image._id))
+        }
+    }
+
 
     return (
         <div className='text-white card shadow-lg compact side bg-gray-600'>
-            <div className="flex-row items-center space-x-5 card-body">
+            <div className="flex-row items-center space-x-5 card-body relative">
+
+                <button onClick={onDelete}>
+                    <span className=' absolute top-6 right-10 font-bold cursor-pointer hover:text-black' title='Delete?'>X</span>
+                </button>
 
                 <div className='avatar'>
                     <div className="rounded-sm shadow w-32 h-32">

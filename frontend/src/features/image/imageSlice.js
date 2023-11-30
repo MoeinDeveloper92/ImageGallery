@@ -53,9 +53,24 @@ export const getImage = createAsyncThunk("image/get", async (imageId, thunkAPI) 
     }
 })
 
+//Export to excel file
 export const exportToExcel = createAsyncThunk("image/excel", async (_, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token
     return await imageService.exportToExcel(token)
+})
+
+
+//Delete image card
+export const deleteImage = createAsyncThunk("image/delete", async (imageId, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await imageService.deleteImage(imageId, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message)
+            || error.message
+            || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
 })
 
 //create Image slice
@@ -101,6 +116,19 @@ export const imageSlice = createSlice({
                 state.image = action.payload
             })
             .addCase(getImage.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(deleteImage.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deleteImage.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.images = state.images.filter((image) => image._id !== action.payload.id)
+            })
+            .addCase(deleteImage.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
